@@ -1,16 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-var MainWindow = React.createClass({
-    getInitialState: function () {
-        return {
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             message: '',
-        };
-    },
-    handleTextChange: function (event) {
-        this.setState({ message: event.target.value });
-    },
-    render: function () {
+        }
+        this.handleTextChange = this.handleTextChange.bind(this);
+    }
+
+    handleTextChange(e) {
+    this.setState({ message: e.target.value });
+    }
+
+
+    render(){
         return (
             <div>
                 Hello world!!
@@ -21,11 +26,11 @@ var MainWindow = React.createClass({
                     <span>{this.state.message}</span>
                 </p>
             </div>
-        );
+        )
     }
-});
+}
 
 ReactDOM.render(
-    <MainWindow />,
+    <App />,
     document.getElementById('test')
 );
