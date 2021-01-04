@@ -1,30 +1,41 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import Timer from "react-compound-timer";
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            message: '',
+            // second: '',
+            // minute: '',
+
         }
-        this.handleTextChange = this.handleTextChange.bind(this);
+        // this.handleTextChange = this.handleTextChange.bind(this);
     }
 
-    handleTextChange(e) {
-    this.setState({ message: e.target.value });
-    }
+    // handleTextChange(e) {
+    // this.setState({ message: e.target.value });
+    // }
 
 
     render(){
         return (
             <div>
-                Hello world!!
-                <hr />
-                <input type="text" onChange={this.handleTextChange} />
-                <p><strong>你輸入的是</strong></p>
-                <p>
-                    <span>{this.state.message}</span>
-                </p>
+                <Timer
+                    timeToUpdate = {50}
+                >
+                    <Timer.Days /> days
+                    <Timer.Hours /> hours
+                    <Timer.Minutes /> minutes
+                    <Timer.Seconds /> seconds
+                    <Timer.Milliseconds 
+                        formatValue = {value => {
+                            // console.log(value)
+                            let tmp = Math.trunc(value / 10);
+                            return (tmp).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })}
+                        }
+                    /> milliseconds
+                </Timer>
             </div>
         )
     }
@@ -32,5 +43,5 @@ class App extends React.Component {
 
 ReactDOM.render(
     <App />,
-    document.getElementById('test')
+    document.getElementById('app')
 );
