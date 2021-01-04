@@ -8,7 +8,6 @@ export class Counter extends React.Component {
         this.state = {
             // second: '',
             // minute: '',
-
         }
         // this.handleTextChange = this.handleTextChange.bind(this);
     }
@@ -30,7 +29,7 @@ export class Counter extends React.Component {
                         
                     }}
                 >
-                    {({ start, resume, pause, stop, reset, timerState }) => (
+                    {({ start, stop, reset, setTime }) => (
                         <>
                             <div>
                                 <Timer.Minutes
@@ -55,7 +54,8 @@ export class Counter extends React.Component {
                             <div>
                                 <button onClick={start}>Start</button>
                                 <button onClick={stop}>Stop</button>
-                                <button onClick={reset}>Reset</button>
+                                <button onClick={() => reset && setTime(this.props.initTime)}>Reset</button>
+                                <button onClick={() => setTime(5 * 1000 * 60)}>Next Session</button>
                             </div>
                         </>
                     )}
