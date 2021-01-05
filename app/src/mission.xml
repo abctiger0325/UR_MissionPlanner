@@ -1,0 +1,15 @@
+<Plan>
+    <Mission point="5" id="1_1" task="1" done="false">
+        Disconnect the old power connector
+    </Mission>
+    <Mission point="10" id="1_2" task="1" prereg="1_1" done="false">
+        Remove previous bag
+    </Mission>
+    <Mission point="10" id="1_3" task="1" prereg="1_2" done="false">
+        Install new bag
+    </Mission>
+    <Mission point="20" id="1_4" task="1" prereg="1_3" done="false">
+        Reconnect the new power connector
+    </Mission>
+    
+</Plan>

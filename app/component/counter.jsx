@@ -1,11 +1,11 @@
 import React from "react";
 import Timer from "react-compound-timer";
 
-
 export class Counter extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            prepared: false
             // second: '',
             // minute: '',
         }
@@ -16,8 +16,8 @@ export class Counter extends React.Component {
     // this.setState({ message: e.target.value });
     // }
 
-
     render() {
+        const {prepared} = this.state;
         return (
             <>
                 <Timer
@@ -25,9 +25,16 @@ export class Counter extends React.Component {
                     timeToUpdate={50}
                     direction="backward"
                     startImmediately={false}
-                    onStop={function() {
-                        
-                    }}
+                    checkpoints = {[
+                        {
+                            time: 0,
+                            callback: () => {
+                                if (prepared) {
+                                } else {
+                                }
+                            }
+                        }
+                    ]}
                 >
                     {({ start, stop, reset, setTime }) => (
                         <>
@@ -54,8 +61,16 @@ export class Counter extends React.Component {
                             <div>
                                 <button onClick={start}>Start</button>
                                 <button onClick={stop}>Stop</button>
-                                <button onClick={() => reset && setTime(this.props.initTime)}>Reset</button>
-                                <button onClick={() => setTime(5 * 1000 * 60)}>Next Session</button>
+                                <button onClick={() => reset && setTime(this.props.initTime) && function() {
+                                    this.setState({
+                                        prepared: false
+                                    });
+                                }}>Reset</button>
+                                <button onClick={() => setTime(15 * 1000 * 60) && function() {
+                                    this.setState({
+                                        prepared: true
+                                    })
+                                }}>Next Session</button>
                             </div>
                         </>
                     )}

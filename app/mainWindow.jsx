@@ -23,7 +23,10 @@ class App extends React.Component {
             <div>
                 Time Counter: 
                 <Counter
-                    initTime = {1000 * 60 * 15}
+                    // initTime = {1000 * 60 * 5}
+                    initTime = {1000 * 15}
+                    prepareTime = {5}
+                    runTime = {15}
                 />
             </div>
         )
