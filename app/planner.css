@@ -1,0 +1,75 @@
+html {
+    height: 100%;
+}
+
+body {
+    flex-direction: row;
+    display: flex;
+    background-color: #e3feff;
+    height: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#planner {
+    flex: 1;
+    margin-left: 8px;
+}
+
+#mannual {
+    align-self: flex-end;
+    width: 24px;
+    flex-direction: row;
+    display: flex;
+    transition: 0.3s;
+    height: 100%;
+}
+
+#pdf {
+    border: 1px solid blue;
+}
+
+#toggle {
+    align-self: center;
+    transition: 0.3s;
+}
+
+#hide {
+    display: flex;
+}
+
+#timer-button {
+    flex-direction: row;
+}
+
+#pause-button {
+    display: none;
+}
+
+#timer {
+    margin-bottom: 10px;
+}
+
+#mission {
+    flex-direction: column;
+    display: flex;
+}
+
+.MissionContainer {
+    border: 1px solid;
+    margin : 10px;
+    background-color: #32d1a9;
+    cursor: pointer;
+    -webkit-user-select:none; 
+    -webkit-touch-callout:none; 
+    -moz-user-select:none; 
+    -ms-user-select:none; 
+    user-select:none;
+}
+
+.Disabled {
+    cursor: not-allowed;
+    background-color: #90a3a2;
+    margin-left: 60px;
+    opacity: 0.5;
+}

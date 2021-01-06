@@ -8,7 +8,7 @@ function createWindow() {
         height: 600 
     });
 
-    mainWindow.loadURL('file://' + __dirname + '/app/mainWindow.html');
+    mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 
     mainWindow.webContents.openDevTools();
 
