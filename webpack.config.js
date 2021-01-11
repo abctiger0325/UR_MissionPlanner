@@ -3,7 +3,8 @@ var webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
 
 var config = {
     entry: {
-        mainWindow: ['./app/mainWindow.jsx']
+        mainWindow: ['./app/mainWindow.jsx'],
+        pdfViewer: ['./app/pdfViewer.jsx'] 
     },
     output: {
         path: __dirname + '/app/built',

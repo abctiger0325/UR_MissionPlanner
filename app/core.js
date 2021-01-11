@@ -43,6 +43,10 @@ $(document).ready(
         $('#timer-counter .values')
             // .css("color", "red")
             .html(zero);
+
+        // $('#test').click(function(){
+        //     $('#planner').append('<div id="app"></div><script src="./built/mainWindow.js"></script>')
+        // })
             
         $("#start-button").click(function () {
             // console.log("ding");
@@ -102,7 +106,7 @@ $(document).ready(
                 // if ($("#pdf").attr('init') === "false") {
                 //     $("#pdf")
                 //         .css('width', '100%')
-                //         .html('<embed width="100%" height="100%" src="./src/mannual.pdf#toolbar=0&navpanes=0&scrollbar=0"></embed>')
+                //         .html('<webview width="100%" height="100%" src="http://files.materovcompetition.org/2021/2021_EXPLORER_Manual_14Sept2020.pdf"></webview>')
                 //         .attr("init", "true")
                 // }
             }

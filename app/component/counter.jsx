@@ -14,7 +14,9 @@ class Wrapper extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            prepared: false
+            prepared: false,
+            beep: '',
+            end: ''
         }
         // console.log(this.props)
     }
@@ -39,13 +41,15 @@ class Wrapper extends React.Component {
     //     ]}
 
     componentDidMount(){
+        const { setCheckpoints,  setTime, start } = this.props.timer;
+        const {prepared} = this.state;
+
         const end = new UIfx(
             '../app/src/end.mp3',
             {
                 volume: 0.7
             }
         );
-
         const beep = new UIfx(
             '../app/src/beep.mp3',
             {
@@ -53,10 +57,31 @@ class Wrapper extends React.Component {
             }
         )
 
+        setCheckpoints([
+            {
+                time: 0,
+                callback: () => {
+                    if (!prepared){
+                        setTime(15 * 1000 * 60);
+                        start();
+                        beep.play();
+                        this.setState({
+                            prepared: true
+                        })
+                    } else {
+                        end.play();
+                    }
+                }
+            }
+        ])
+
+        this.setState({
+            end,beep
+        })
     }
 
     render() {
-        const {prepared} = this.state;
+        const {prepared, beep, end} = this.state;
         const Time = this.props.timer;
 
         return (
@@ -84,24 +109,26 @@ class Wrapper extends React.Component {
                 <div>
                     <button onClick={() => {
                         Time.start();
-                        console.log(Time);
+                        // console.log(Time);
                     }}>Start</button>
                     <button onClick={() => {
                         Time.stop();
                     }}>Stop</button>
                     <button onClick={() => {
                         Time.reset();
-                        Time.setTime(1000 * 5);
+                        Time.setTime(1000 * 5 * 60);
                         this.setState({
                             prepared: false
                         });
                     }}>Reset</button>
-                    <button onClick={() => {
+                    {(this.state.prepared === false)?
+                    (<button onClick={() => {
                         Time.setTime(15 * 1000 * 60);
+                        beep.play();
                         this.setState({
                             prepared: true
-                        })
-                    }}>Next Session</button>
+                        })}}
+                    >Next Session</button>):null}
                 </div>
             </>
         )
@@ -109,9 +136,9 @@ class Wrapper extends React.Component {
 }
 
 export const Counter = withTimer({
-    // initialTime: 1000 * 60 * 5,
-    initialTime: 1000 * 5,
+    initialTime: 1000 * 60 * 5,
+    // initialTime: 1000 * 5,
     timeToUpdate: 50,
     direction:"backward",
-    startImmediately: false
+    startImmediately: false,
 })(Wrapper)
