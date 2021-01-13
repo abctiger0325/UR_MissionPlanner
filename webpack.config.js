@@ -27,7 +27,11 @@ var config = {
                 options: {
                     presets: ['es2015'],
                 }
-            }
+            },
+            { 
+                test: /\.xml$/, 
+                loader: 'xml-loader' 
+            } // will load all .xml files with xml-loader by default
         ]
     },
     plugins: [
