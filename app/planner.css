@@ -11,6 +11,10 @@ body {
     overflow: hidden;
 }
 
+#app {
+    width: 90%;
+}
+
 #planner {
     flex: 1;
     margin-left: 8px;
@@ -59,12 +63,12 @@ body {
     border: 1px solid;
     margin : 10px;
     background-color: #32d1a9;
-    cursor: pointer;
-    -webkit-user-select:none; 
-    -webkit-touch-callout:none; 
-    -moz-user-select:none; 
-    -ms-user-select:none; 
-    user-select:none;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
 }
 
 .Disabled {
@@ -72,4 +76,8 @@ body {
     background-color: #90a3a2;
     margin-left: 60px;
     opacity: 0.5;
+}
+
+.react-switch {
+    margin: 5px;
 }

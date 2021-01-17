@@ -11,5 +11,7 @@
     <Mission point="20" id="1_4" task="1" prereg="1_3" done="false">
         Reconnect the new power connector
     </Mission>
-    
+    <Mission point="5" id="2_1" task="2" done="false">
+        Testing
+    </Mission>
 </Plan>
