@@ -11,6 +11,10 @@ body {
     overflow: hidden;
 }
 
+button {
+    margin: 5px
+}
+
 #app {
     width: 90%;
 }

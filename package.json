@@ -6,6 +6,7 @@
         "@babel/core": "^7.12.10",
         "@babel/preset-react": "^7.12.10",
         "@phuocng/react-pdf-viewer": "^1.7.0",
+        "@progress/kendo-file-saver": "^1.1.0",
         "@react-pdf-viewer/core": "^2.3.0",
         "babel-loader": "^8.2.2",
         "easytimer.js": "^4.3.1",
@@ -13,6 +14,7 @@
         "electron-packager": "^15.2.0",
         "electron-prebuilt": "^1.4.13",
         "electron-rebuild": "^2.3.4",
+        "fs": "0.0.1-security",
         "jquery": "^3.5.1",
         "react": "^17.0.1",
         "react-beautiful-dnd": "^13.0.0",
@@ -29,6 +31,7 @@
         "webpack": "^5.11.1",
         "webpack-target-electron-renderer": "^0.4.0",
         "xml-loader": "^1.2.1",
+        "xml2json": "^0.12.0",
         "xmlhttprequest": "^1.8.0"
     },
     "scripts": {

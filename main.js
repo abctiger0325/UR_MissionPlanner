@@ -1,6 +1,6 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 
-let mainWindow;
+var mainWindow;
 
 function createWindow() {
     mainWindow = new BrowserWindow({ 
@@ -11,7 +11,6 @@ function createWindow() {
             plugins: true
         }
     });
-
     // pdfWindow = new BrowserWindow({
     //     width: 800,
     //     height: 600
@@ -23,6 +22,12 @@ function createWindow() {
     //     mainWindow = null;
     // });
 
+    ipcMain.on('mounted',(e) => {
+        let fs = require('fs');
+
+        let data = fs.readFileSync('./app/src/mission.xml', { encoding: 'utf-8' });
+        e.returnValue = data
+    })
     mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 
     mainWindow.webContents.openDevTools();
@@ -33,6 +38,15 @@ function createWindow() {
 }
 
 app.on('ready', createWindow);
+
+// app.on('web-contents-created', function (e,web) {
+//     let fs = require('fs');
+
+//     let data = fs.readFileSync('./app/src/mission.xml');
+
+//     console.log("ding")
+//     web.webContents.send('pdf', data);
+// })
 
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {

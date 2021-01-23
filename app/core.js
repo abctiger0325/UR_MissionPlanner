@@ -4,6 +4,7 @@ var timer = new Timer();
 // var planner = $.parseXML("./src/mission.xml");
 // var xml = $(planner);
 
+
 function playBeep(sound,time,speed){
     let timeout = setInterval(function () {
         $(sound)[0].pause();

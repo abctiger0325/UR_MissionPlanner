@@ -5,6 +5,7 @@ import Switch from "react-switch";
 import { Counter } from './component/counter.jsx';
 import { Mission }  from './component/mission.jsx';
 // import { Planner } from './component/planner.jsx';
+const { ipcRenderer } = window.require('electron');
 
 
 class App extends React.Component {
@@ -48,6 +49,7 @@ class App extends React.Component {
                 />
                 <Mission
                     draggable={this.state.planning}
+                    file="mission.xml"
                 />
             </div>
         )

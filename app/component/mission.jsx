@@ -1,16 +1,8 @@
 import React from "react";
 import XMLData from '../src/mission.xml';
 import RGL, { WidthProvider, GridLayout  } from "react-grid-layout";
-
-// var rawFile = new XMLHttpRequest();
-// rawFile.open("GET", XMLData, false);
-// rawFile.onreadystatechange = () => {
-//     if (rawFile.readyState === 4) {
-//         if (rawFile.status === 200 || rawFile.status == 0) {
-//             var xmlasstring = rawFile.responseText;
-//             console.log('Your xml file as string', xmlasstring)
-//         }
-//     }
+import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
+const { ipcRenderer } = window.require('electron');
 
 export class Mission extends React.Component {
     constructor(props) {
@@ -31,6 +23,54 @@ export class Mission extends React.Component {
         //         </div>)
         // })
 
+
+        // let data = require('../src/'+ this.props.file)
+        // console.log(data)
+        // const data = XMLData.Plan.Mission;
+        let data = ipcRenderer.sendSync('mounted', true);
+        // console.log(data,XMLData)
+        data = data.match(/[^<]+/g)
+        data = data.filter(x => !x.includes('/'))
+        data.shift();
+        data = data.map((d, i) => {
+            let tmp = d.match(/[^>]+/g)
+            let attr = tmp[0];
+            attr = attr.match(/[^\s]+/g)
+            attr.shift();
+            const attrObj = new Object;
+            attr.forEach((d, i) => {
+                let a = d.match(/[^=]+/g)
+                let v = a[1].match(/\w+/g)
+                Object.defineProperty(attrObj, a[0], {
+                    value: v[0],
+                    enumerable: true
+                })
+            })
+            // console.log(attrObj)
+            let info = tmp[1]
+            const res = new Object();
+            Object.defineProperties(res, {
+                _: {
+                    value: info,
+                    enumerable: true
+                },
+                $: {
+                    value: attrObj,
+                    enumerable: true
+                }
+            })
+            // console.log(res)
+            return res
+        })
+
+        this.state = {
+            data
+        }
+        // console.log(this.state.data)
+        // const dataURI = "data:text/xml;base64," + encodeBase64(JSON.stringify(data));
+        // saveAs(dataURI, 'testing.xml');
+
+
         let missions = this.renderDOM();
 
         let res = this.renderLayout();
@@ -40,9 +80,11 @@ export class Mission extends React.Component {
         this.state = {
             missions,layout,
             draggable: this.props.draggable,
-            limit
+            limit,
+            data
         }
         console.log(this.state)
+
     }
 
     componentDidUpdate(prevProps){
@@ -73,8 +115,9 @@ export class Mission extends React.Component {
     }
 
     renderDOM(){
-        let missions = XMLData.Plan.Mission.map((d, i) => {
-            console.log(d)
+        const {data} = this.state;
+        let missions = data.map((d, i) => {
+            // console.log(d)
             let name = d.$.prereg === undefined ? "MissionContainer" : "MissionContainer Disabled";
             return (
                 <div
@@ -90,11 +133,12 @@ export class Mission extends React.Component {
 
     renderLayout(){
         let limit = [];
-        let layout = XMLData.Plan.Mission.map((d, i) => {
+        const {data} = this.state;
+        let layout = data.map((d, i) => {
             // console.log(d)
             if (d.$.prereg !== undefined) {
-                let obj = XMLData.Plan.Mission.find(e => e.$.id === d.$.prereg);
-                let num = XMLData.Plan.Mission.findIndex(e => e.$.id === d.$.prereg);
+                let obj = data.find(e => e.$.id === d.$.prereg);
+                let num = data.findIndex(e => e.$.id === d.$.prereg);
                 // console.log(num)
                 limit.push({
                     preId: obj.$.id,
@@ -127,25 +171,52 @@ export class Mission extends React.Component {
                 return
             }
         }
-        const list = XMLData.Plan.Mission;
-        const listObj = list.splice(oldItem.y, 1);
-        list.splice(newItem.y, 0, listObj[0])
+        const {data} = this.state;
+        const listObj = data.splice(oldItem.y, 1);
+        data.splice(newItem.y, 0, listObj[0])
         let missionsNew = this.renderDOM();
 
         let res = this.renderLayout();
         let layoutNew = res[0];
         let limitNew = res[1];
 
-        console.log(list,XMLData.Plan.Mission)
+        // console.log(list,XMLData.Plan.Mission)
         this.setState({
             missions:missionsNew, 
             layout:layoutNew,
-            limit:limitNew
+            limit:limitNew,
+            data
         })
     }
 
+    renderXML(data){
+        let head = "<Plan>\n";
+        let tail = "</Plan>";
+        let body = data.map((d, i) => {
+            // console.log(d)
+            let attr = d.$
+            let attrString = ""
+            // console.log(Object.keys(attr))
+            Object.keys(attr).forEach((k,i) => {
+                // console.log(k,i)
+                attrString = attrString.concat(
+                    `${k}="${attr[k]}" `
+                )
+            })
+            let tmp = d._
+            let regex = /\w+|\s\b/g
+            tmp = tmp.match(regex)
+            if (tmp[0] === " ")tmp.shift()
+            tmp = tmp.join('')
+            // console.log(tmp)
+            return `<Mission ${attrString}>${tmp}</Mission>\n`
+        })
+        // console.log(body)
+        return head + body.join('') + tail;
+    }
+
     render() {
-        const {missions, layout, draggable} = this.state
+        const {missions, layout, draggable,data} = this.state
         console.log(draggable);
         const ReactGridLayout = WidthProvider(RGL);
 
@@ -163,6 +234,12 @@ export class Mission extends React.Component {
                 >
                     {missions}
                 </ReactGridLayout>
+                <button onClick={() => {
+                    let file = this.renderXML(data)
+                    // console.log(file)
+                    const dataURI = "data:text/xml;base64," + encodeBase64(file);
+                    saveAs(dataURI, this.props.file);
+                }}>Save</button>
             </>
         )
     }
