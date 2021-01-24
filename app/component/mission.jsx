@@ -150,9 +150,10 @@ export class Mission extends React.Component {
             return {
                 x: 0,
                 y: i,
-                w: 3,
+                w: 1,
                 h: 1,
                 i: i.toString(),
+                maxW: 300
                 // isDraggable: able
             }
         })
@@ -219,6 +220,7 @@ export class Mission extends React.Component {
         const {missions, layout, draggable,data} = this.state
         console.log(draggable);
         const ReactGridLayout = WidthProvider(RGL);
+        console.log(ReactGridLayout)
 
         return (
             <>
@@ -228,7 +230,7 @@ export class Mission extends React.Component {
                     isDraggable={draggable}
                     cols = {1}
                     rowHeight = {60}
-                    width = {600}
+                    width = {300}
                     // draggableCancel=".Disabled"
                     onDragStop={(layout, oldItem, newItem, placeholder, e, element) => this.handleDrag(layout, oldItem, newItem, placeholder, e, element)}
                 >

@@ -1,6 +1,7 @@
 import React from "react";
 import Timer from "react-compound-timer";
 import UIfx from 'uifx';
+import SevenSegmentDisplay from "react-seven-segment-display";
 
 
 const withTimer = timerProps => WrappedComponent => wrappedComponentProps => (
@@ -16,7 +17,10 @@ class Wrapper extends React.Component {
         this.state = {
             prepared: false,
             beep: '',
-            end: ''
+            end: '',
+            min: 0,
+            sec: 0,
+            ms: 0
         }
         // console.log(this.props)
     }
@@ -81,29 +85,92 @@ class Wrapper extends React.Component {
     }
 
     render() {
-        const {prepared, beep, end} = this.state;
+        const {prepared, beep, end, min,sec,ms} = this.state;
         const Time = this.props.timer;
 
         return (
             <>
-                <div>
+                
+                <div className="timerView">
+                    <div className={"segment"}>
+                        <SevenSegmentDisplay
+                            value={min / 10}
+                            onColor="#00ffd0"
+                            offColor="#01382e"
+                            height={5}
+                            width={25}
+                        />
+                    </div>
+                    <div className={"segment"}>
+                        <SevenSegmentDisplay
+                            value={min % 10}
+                            onColor="#00ffd0"
+                            offColor="#01382e"
+                            height={5}
+                            width={25}
+                        />
+                    </div>
+                    {/* <Timer.Minutes
+                        formatValue={
+                            value => (value).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
+                        }
+                    /> : */}
                     <Timer.Minutes
                         formatValue={
-                            value => (value).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
+                            value => null
                         }
                     /> :
+
+                    <div className={"segment"}>
+                        <SevenSegmentDisplay
+                            value={sec / 10}
+                            onColor="#00ffd0"
+                            offColor="#01382e"
+                            height={5}
+                            width={25}
+                        />
+                    </div>
+                    <div className={"segment"}>
+                        <SevenSegmentDisplay
+                            value={sec % 10}
+                            onColor="#00ffd0"
+                            offColor="#01382e"
+                            height={5}
+                            width={25}
+                        />
+                    </div>
                     <Timer.Seconds
                         formatValue={
-                            value => (value).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
+                            value => null
                         }
                     /> :
+
+                    <div className={"segment"}>
+                        <SevenSegmentDisplay
+                            value={ms / 10}
+                            onColor="#00ffd0"
+                            offColor="#01382e"
+                            height={5}
+                            width={25}
+                        />
+                    </div>
+                    <div className={"segment"}>
+                        <SevenSegmentDisplay
+                            value={ms % 10}
+                            onColor="#00ffd0"
+                            offColor="#01382e"
+                            height={5}
+                            width={25}
+                        />
+                    </div>
                     <Timer.Milliseconds
                         formatValue={
-                            value => {
-                            // console.log(value)
-                            let tmp = Math.trunc(value / 10);
-                            return (tmp).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
-                        }}
+                            // value => {
+                            // // console.log(value)
+                            // let tmp = Math.trunc(value / 10);
+                            // return (tmp).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
+                            value => null
+                        }
                     />
                 </div>
                 <div>

@@ -4,7 +4,8 @@ import Switch from "react-switch";
 
 import { Counter } from './component/counter.jsx';
 import { Mission }  from './component/mission.jsx';
-// import { Planner } from './component/planner.jsx';
+import {CounterSimp} from './component/counterSimp.jsx';
+// import { PdfViewer } from './component/pdfView.jsx';
 const { ipcRenderer } = window.require('electron');
 
 
@@ -24,8 +25,14 @@ class App extends React.Component {
     render(){
         return (
             <div>
-                Time Counter: 
-                <Counter/>
+                <div className="counter">
+                    Time Counter: 
+                    <CounterSimp
+                        min = {5}
+                        sec = {0}
+                    />
+                </div>
+                {/* <Counter/> */}
                 Mission: 
                 <Switch
                     checked={this.state.planning}

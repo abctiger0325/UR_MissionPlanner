@@ -1,11 +1,13 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
+app.commandLine.appendSwitch('no-sandbox');
 
 var mainWindow;
 
 function createWindow() {
     mainWindow = new BrowserWindow({ 
-        width: 800, 
-        height: 600,
+        // width: 800, 
+        // height: 600,
+        fullscreen: true,
         webPreferences: {
             // nodeIntegration: true,
             plugins: true
@@ -31,6 +33,7 @@ function createWindow() {
     mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 
     mainWindow.webContents.openDevTools();
+    mainWindow.setMenuBarVisibility(false)
 
     mainWindow.on('closed', function () {
         mainWindow = null;
