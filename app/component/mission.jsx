@@ -1,8 +1,9 @@
 import React from "react";
 import XMLData from '../src/mission.xml';
-import RGL, { WidthProvider, GridLayout  } from "react-grid-layout";
+import RGL, { WidthProvider, GridLayout } from "react-grid-layout";
 import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
 const { ipcRenderer } = window.require('electron');
+import { GrCatalog } from "react-icons/gr";
 
 export class Mission extends React.Component {
     constructor(props) {
@@ -78,17 +79,19 @@ export class Mission extends React.Component {
         let limit = res[1];
 
         this.state = {
-            missions,layout,
+            missions, layout,
             draggable: this.props.draggable,
             limit,
-            data
+            data,
+            info: [],
+            info_id: ""
         }
         console.log(this.state)
 
     }
 
-    componentDidUpdate(prevProps){
-        if (prevProps.draggable !== this.props.draggable){
+    componentDidUpdate(prevProps) {
+        if (prevProps.draggable !== this.props.draggable) {
             let res = this.renderLayout();
             let layout = res[0];
             let limit = res[1];
@@ -97,11 +100,11 @@ export class Mission extends React.Component {
                 layout,
                 draggable: this.props.draggable,
                 limit
-            },() => console.log(this.state.limit))
+            }, () => console.log(this.state.limit))
         }
     }
 
-    inRange(e,rule,newPos){
+    inRange(e, rule, newPos) {
         let obj = e.getAttribute("id");
         let preRule = rule.filter(x => (x.preId) === obj);
         let reqRule = rule.filter(x => (x.regId) === obj);
@@ -114,8 +117,8 @@ export class Mission extends React.Component {
         return prePass && reqPass;
     }
 
-    renderDOM(){
-        const {data} = this.state;
+    renderDOM() {
+        const { data } = this.state;
         let missions = data.map((d, i) => {
             // console.log(d)
             let name = d.$.prereg === undefined ? "MissionContainer" : "MissionContainer Disabled";
@@ -123,6 +126,34 @@ export class Mission extends React.Component {
                 <div
                     key={i}
                     className={name}
+                    onClick={(e) => {
+                        if (this.state.draggable) return;
+                        // console.log(e.target.id)
+                        let id = e.target.id;
+                        // console.log(d.$)
+                        let info = new Array;
+                        Object.keys(d.$).forEach((data, i) => {
+                            // console.log(data,i,d.$[data])
+                            let comp =
+                                <div
+                                    className="info"
+                                    key={i}
+                                >
+                                    {data} : {d.$[data]}
+                                </div>
+                            info = info.concat(comp)
+                        })
+                        info = info.concat(<GrCatalog onClick={(e) => {
+                            let data = ipcRenderer.sendSync('clicked', d.$["page"]);
+                        }}/>)
+                        // let doc = new DOMParser().parseFromString(info,'text/xml')
+                        // console.log(doc)
+                        this.setState({
+                            info,
+                            info_id: id
+                        })
+                        // let data = ipcRenderer.sendSync('clicked', e.target.id);
+                    }}
                     {...d.$}
                 >
                     {d._}
@@ -131,9 +162,9 @@ export class Mission extends React.Component {
         return missions
     }
 
-    renderLayout(){
+    renderLayout() {
         let limit = [];
-        const {data} = this.state;
+        const { data } = this.state;
         let layout = data.map((d, i) => {
             // console.log(d)
             if (d.$.prereg !== undefined) {
@@ -157,22 +188,22 @@ export class Mission extends React.Component {
                 // isDraggable: able
             }
         })
-        return [layout,limit]
+        return [layout, limit]
     }
 
-    handleDrag(lay, oldItem, newItem, placeholder, e, element){
+    handleDrag(lay, oldItem, newItem, placeholder, e, element) {
         // console.log(element.getAttribute("id"),newItem.y);
-        const {limit,layout,missions} = this.state;
+        const { limit, layout, missions } = this.state;
 
         let filterRes = limit.filter(x => (x.preId === element.getAttribute("id") || x.regId === element.getAttribute("id")))
         // console.log(filterRes)
-        if (filterRes.length > 0){
-            if (!this.inRange(element,filterRes,newItem.y)){
-                this.setState({layout})
+        if (filterRes.length > 0) {
+            if (!this.inRange(element, filterRes, newItem.y)) {
+                this.setState({ layout })
                 return
             }
         }
-        const {data} = this.state;
+        const { data } = this.state;
         const listObj = data.splice(oldItem.y, 1);
         data.splice(newItem.y, 0, listObj[0])
         let missionsNew = this.renderDOM();
@@ -183,14 +214,14 @@ export class Mission extends React.Component {
 
         // console.log(list,XMLData.Plan.Mission)
         this.setState({
-            missions:missionsNew, 
-            layout:layoutNew,
-            limit:limitNew,
+            missions: missionsNew,
+            layout: layoutNew,
+            limit: limitNew,
             data
         })
     }
 
-    renderXML(data){
+    renderXML(data) {
         let head = "<Plan>\n";
         let tail = "</Plan>";
         let body = data.map((d, i) => {
@@ -198,7 +229,7 @@ export class Mission extends React.Component {
             let attr = d.$
             let attrString = ""
             // console.log(Object.keys(attr))
-            Object.keys(attr).forEach((k,i) => {
+            Object.keys(attr).forEach((k, i) => {
                 // console.log(k,i)
                 attrString = attrString.concat(
                     `${k}="${attr[k]}" `
@@ -207,7 +238,7 @@ export class Mission extends React.Component {
             let tmp = d._
             let regex = /\w+|\s\b/g
             tmp = tmp.match(regex)
-            if (tmp[0] === " ")tmp.shift()
+            if (tmp[0] === " ") tmp.shift()
             tmp = tmp.join('')
             // console.log(tmp)
             return `<Mission ${attrString}>${tmp}</Mission>\n`
@@ -217,10 +248,10 @@ export class Mission extends React.Component {
     }
 
     render() {
-        const {missions, layout, draggable,data} = this.state
-        console.log(draggable);
+        const { missions, layout, draggable, data, info } = this.state
+        // console.log(draggable);
         const ReactGridLayout = WidthProvider(RGL);
-        console.log(ReactGridLayout)
+        // console.log(ReactGridLayout)
 
         return (
             <>
@@ -228,9 +259,9 @@ export class Mission extends React.Component {
                     layout={layout}
                     isResizable={false}
                     isDraggable={draggable}
-                    cols = {1}
-                    rowHeight = {60}
-                    width = {300}
+                    cols={1}
+                    rowHeight={60}
+                    width={300}
                     // draggableCancel=".Disabled"
                     onDragStop={(layout, oldItem, newItem, placeholder, e, element) => this.handleDrag(layout, oldItem, newItem, placeholder, e, element)}
                 >
@@ -242,6 +273,9 @@ export class Mission extends React.Component {
                     const dataURI = "data:text/xml;base64," + encodeBase64(file);
                     saveAs(dataURI, this.props.file);
                 }}>Save</button>
+                <div className="missionViewer">
+                    {info}
+                </div>
             </>
         )
     }

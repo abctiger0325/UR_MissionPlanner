@@ -22,22 +22,17 @@ button {
 
 
 .counter {
+    display: flex;
+    flex-direction: column;
     border: 5px solid #436e83;
     margin: 5px 6px;
     border-radius: 5px;
     padding: 15px;
+    /* justify-content: center; */
+    align-items: center;
 }
 /* #planner {
 } */
-
-.timerView {
-    display: flex;
-    flex-direction: row;
-}
-
-.segment {
-    margin-left: 8px;
-}
 
 #mannual {
     align-self: flex-end;
@@ -105,4 +100,30 @@ button {
 
 .react-switch {
     margin: 5px;
+}
+
+.timerView {
+    display: flex;
+    flex-direction: row;
+}
+
+.segment {
+    margin-left: 8px;
+}
+
+.missionViewer {
+    width: 60vw;
+    height: 20vh;
+    align-self: center;
+    border: 1px solid rgba(236, 236, 236, 0.667);
+    background-color: #aaa;
+}
+
+.mission button {
+    width: 10vw;
+}
+
+.mission {
+    display: flex;
+    flex-direction: column;
 }

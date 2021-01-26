@@ -1,31 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Document, Page, PDFViewer } from '@react-pdf/renderer';
+const { ipcRenderer } = window.require('electron');
 
 export class PdfViewer extends React.Component {
     constructor(props) {
         super(props);
+        let data = ipcRenderer.sendSync('pdf', true);
         this.state = {
             pageNum: 1
         }
     }
 
-    onDocumentLoadSuccess(num){
-
-    }
 
     render() {
-        const {  pageNum } = this.state;
         return(
             <>
-                <PDFViewer>
-                    <Document
-                        file="../src/mannual.pdf"
-                        onLoadSuccess={(e) => onDocumentLoadSuccess(e)}
-                    >
-                        <Page pageNumber={pageNum} />
-                    </Document>
-                </PDFViewer>
+                123
             </>
         ) 
     }

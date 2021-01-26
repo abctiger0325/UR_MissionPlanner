@@ -1,5 +1,17 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
+// const fetch = require("node-fetch");
 app.commandLine.appendSwitch('no-sandbox');
+// pdfjsLib.GlobalWorkerOptions.workerSrc =
+//     "../../build/webpack/pdf.worker.bundle.js";
+
+
+// function pdfRender() {
+//     let filepath = __dirname + "/src/mannual.pdf"
+//     pdfjsLib.getDocument(filepath).promise.then(function () {
+//         console.log("ding")
+//     })
+// }
+
 
 var mainWindow;
 
@@ -30,6 +42,13 @@ function createWindow() {
         let data = fs.readFileSync('./app/src/mission.xml', { encoding: 'utf-8' });
         e.returnValue = data
     })
+
+    ipcMain.on('clicked',(e,arg) => {
+        // console.log(arg)
+        mainWindow.webContents.send('clickedTran',arg);
+        e.returnValue = true;
+    })
+
     mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 
     mainWindow.webContents.openDevTools();

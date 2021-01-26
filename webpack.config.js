@@ -1,10 +1,13 @@
 var webpack = require('webpack');
 var webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
+var path = require("path");
 
 var config = {
+    context: __dirname,
     entry: {
         mainWindow: ['./app/mainWindow.jsx'],
-        pdfViewer: ['./app/pdfViewer.jsx'] 
+        "pdf.worker": "pdfjs-dist/build/pdf.worker.entry",
+        // pdfViewer: ['./app/pdfViewer.jsx'] 
     },
     output: {
         path: __dirname + '/app/built',
@@ -39,6 +42,11 @@ var config = {
         new webpack.IgnorePlugin(/vertx/)
     ],
     target: 'electron-renderer',
-    mode: 'development'
+    mode: 'development',
+    // output: {
+    //     path: path.join(__dirname, "../../build/webpack"),
+    //     publicPath: "../../build/webpack/",
+    //     filename: "[name].bundle.js",
+    // }
 }
 module.exports = config;
