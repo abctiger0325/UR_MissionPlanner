@@ -1,6 +1,7 @@
 import React from "react";
 import UIfx from 'uifx';
 import SevenSegmentDisplay from "react-seven-segment-display";
+import { BiPlay, BiStop, BiReset, BiSkipNext} from "react-icons/bi";
 
 export class CounterSimp extends React.Component {
     constructor(props) {
@@ -106,7 +107,7 @@ export class CounterSimp extends React.Component {
                             width={25}
                         />
                     </div>
-                    <div className={"segment"}>
+                    <div className={"segment semi"}>
                         <SevenSegmentDisplay
                             value={min % 10}
                             onColor="#00ffd0"
@@ -115,7 +116,6 @@ export class CounterSimp extends React.Component {
                             width={25}
                         />
                     </div>
-                    :
                     <div className={"segment"}>
                         <SevenSegmentDisplay
                             value={Math.floor(sec / 10)}
@@ -125,7 +125,7 @@ export class CounterSimp extends React.Component {
                             width={25}
                         />
                     </div>
-                    <div className={"segment"}>
+                    <div className={"segment semi"}>
                         <SevenSegmentDisplay
                             value={sec % 10}
                             onColor="#00ffd0"
@@ -134,8 +134,6 @@ export class CounterSimp extends React.Component {
                             width={25}
                         />
                     </div>
-                    :
-
                     <div className={"segment"}>
                         <SevenSegmentDisplay
                             value={Math.floor(ms / 10)}
@@ -156,14 +154,21 @@ export class CounterSimp extends React.Component {
                     </div>
                 </div>
                 <div>
-                    <button onClick={() => {
+                    <BiPlay 
+                        className= 'react-icons'
+                        onClick={() => {
                         // console.log(Time);
                         this.startTimer()
-                    }}>Start</button>
-                    <button onClick={() => {
+                    }}/>
+                    
+                    <BiStop
+                        className= 'react-icons'
+                        onClick={() => {
                         this.stopTimer()
-                    }}>Stop</button>
-                    <button onClick={() => {
+                    }}/>
+                    <BiReset
+                        className= 'react-icons'
+                        onClick={() => {
                         let tmp = (this.props.min * 60 + this.props.sec) * 100;
                         let timeLeftVar = this.secondsToTime(tmp);
 
@@ -172,9 +177,11 @@ export class CounterSimp extends React.Component {
                             time: timeLeftVar,
                             prepared: false
                         });
-                    }}>Reset</button>
+                    }}/>
                     {(this.state.prepared === false) ?
-                        (<button onClick={() => {
+                        (<BiSkipNext
+                            className= 'react-icons'
+                            onClick={() => {
                             this.stopTimer();
                             beep.play();
                             let tmp = (15 * 60) * 100;
@@ -186,7 +193,7 @@ export class CounterSimp extends React.Component {
                                 prepared: true
                             })
                         }}
-                        >Next Session</button>) 
+                        />) 
                         : null
                     }
                 </div>

@@ -26,7 +26,7 @@ class App extends React.Component {
         return (
             <div>
                 <div className="counter">
-                    Time Counter: 
+                    <p>Time Counter: </p>
                     <CounterSimp
                         min = {5}
                         sec = {0}
@@ -34,27 +34,32 @@ class App extends React.Component {
                 </div>
                 {/* <Counter/> */}
                 <div className="mission">
-                    Mission: 
-                    <Switch
-                        checked={this.state.planning}
-                        onChange={() => {
-                            const {planning} = this.state;
-                            this.setState({
-                                planning: !planning
-                            })
-                        }}
-                        onColor="#86d3ff"
-                        onHandleColor="#2693e6"
-                        handleDiameter={20}
-                        // uncheckedIcon={false}
-                        // checkedIcon={false}
-                        boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                        activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                        height={20}
-                        width={48}
-                        className="react-switch"
-                        id="material-switch"
-                    />
+                    <div className="missionHeader">
+                        <p>Mission:</p> 
+                        <div className="switchMode">
+                            <p>Plan Mode:</p> 
+                            <Switch
+                                checked={this.state.planning}
+                                onChange={() => {
+                                    const {planning} = this.state;
+                                    this.setState({
+                                        planning: !planning
+                                    })
+                                }}
+                                onColor="#93dbc3"
+                                onHandleColor="#309c78"
+                                handleDiameter={20}
+                                // uncheckedIcon={false}
+                                // checkedIcon={false}
+                                boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                                activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                                height={20}
+                                width={48}
+                                className="react-switch"
+                                id="material-switch"
+                            />
+                        </div>
+                    </div>
                     <Mission
                         draggable={this.state.planning}
                         file="mission.xml"
