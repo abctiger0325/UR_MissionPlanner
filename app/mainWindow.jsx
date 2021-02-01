@@ -26,7 +26,7 @@ class App extends React.Component {
         return (
             <div>
                 <div className="counter">
-                    <p>Time Counter: </p>
+                    <p className="textOne">Time Counter: </p>
                     <CounterSimp
                         min = {5}
                         sec = {0}
@@ -35,9 +35,9 @@ class App extends React.Component {
                 {/* <Counter/> */}
                 <div className="mission">
                     <div className="missionHeader">
-                        <p>Mission:</p> 
+                        <p className="textOne">Mission:</p> 
                         <div className="switchMode">
-                            <p>Plan Mode:</p> 
+                            <p className="textOne">Plan Mode:</p> 
                             <Switch
                                 checked={this.state.planning}
                                 onChange={() => {

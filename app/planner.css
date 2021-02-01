@@ -9,6 +9,8 @@ body {
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
+    transition: 0.6s;
+
 }
 
 button {
@@ -24,7 +26,7 @@ button {
 .counter {
     display: flex;
     flex-direction: column;
-    border: 5px double #ff34aa;
+    border: 10px double #ff34aa;
     box-shadow:-4px 4px 2px 1px rgba(253, 121, 161, 0.938),inset -4px 4px 2px 1px rgba(253, 121, 161, 0.938);
     margin: 5px 6px 15px 6px;
     border-radius: 5px;
@@ -34,7 +36,7 @@ button {
 }
 /* #planner {
 } */
-p {
+ .textOne {
     color: rgb(207, 224, 218);
     font-family: Stencil Std, fantasy;
     font-size: 35px;
@@ -51,11 +53,32 @@ p {
 
 }
 
+.textTwo {
+    color: rgb(255, 255, 255);
+    font-family: Stencil Std, fantasy;
+    /* font-size: 30px; */
+    text-shadow: -1px 1px #00ffc8;
+    margin: 8px;
+
+    font-size: 2.2vw;    
+    transition: 0.2s;
+
+    
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+
+}
+
 .missionHeader {
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: row;
+    resize: flex;
 }
 
 .switchMode {
@@ -89,16 +112,22 @@ p {
 
 #pdf {
     border: 1px solid blue;
+    transition: 0.6s;
+
 }
 
 #pdf iframe {
     height: 100%;
     width: 100%;
+    transition: 0.6s;
+
 }
 
 #toggle {
     align-self: center;
     transition: 0.6s;
+    background-color:rgb(110, 223, 148);
+    border-radius: 10px;
 }
 
 #hide {
@@ -123,10 +152,10 @@ p {
 }
 
 .MissionContainer {
-    border: 1px solid;
+    border: 1px solid rgb(110, 223, 148);
     margin : 10px;
-    background-color: #32d1a9;
-    max-width: 80%;
+    /* background-color: #32d1a9; */
+    max-width: 50%;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
     -khtml-user-select: none; /* Konqueror HTML */
@@ -155,12 +184,40 @@ p {
     margin-left: 8px;
 }
 
-.missionViewer {
+.missionDetail {
     width: 60vw;
-    height: 20vh;
+    height:25vh;
     align-self: center;
-    border: 1px solid rgba(236, 236, 236, 0.667);
-    background-color: #aaa;
+    border: 5px double rgba(252, 227, 90, 0.89);
+    box-shadow:-4px 4px 2px 1px rgba(255, 182, 72, 0.938),inset -4px 4px 2px 1px rgba(255, 182, 72, 0.938);
+    padding: 12px;
+    border-radius: 5px;
+
+    /* background-color: rgb(255, 254, 235); */
+    display: flex;
+    flex-direction: row;
+}
+
+.missionDetail p {
+    color: rgb(229, 255, 187);
+    font-family: Stencil Std, fantasy;
+    /* font-size: 30px; */
+    text-shadow: -1px 1px #857803;
+    margin: 8px;
+    margin-bottom: auto;
+
+
+    font-size: 1.6vw;    
+    transition: 0.2s;
+
+    
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+
 }
 
 .mission button {
@@ -170,4 +227,117 @@ p {
 .mission {
     display: flex;
     flex-direction: column;
+    border: 10px double #00ffd5;
+    box-shadow:-4px 4px 2px 1px rgba(224, 246, 255, 0.938),inset -4px 4px 2px 1px rgba(224, 246, 255, 0.938);
+    margin: 5px 6px 15px 6px;
+    border-radius: 5px;
+    padding: 15px;
+
+}
+
+.missionAll {
+    /* display: inline; */
+    flex: 4;
+    margin-bottom: 15px;
+}
+
+.missionView {
+    display: flex;
+    flex-direction: row;
+}
+
+.missionIcon {
+    color: #0ada94;
+    height: 50px;
+    width: 50px;
+}
+
+.saveArea {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.saveArea p {
+    color: rgb(255, 197, 238);
+    font-family: Stencil Std, fantasy;
+    /* font-size: 30px; */
+    text-shadow: -1px 1px #ff0095;
+    margin: 8px;
+    margin-bottom: auto;
+
+
+    font-size: 2.5vw;    
+    transition: 0.2s;
+
+    
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+.saveMain {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 8px double rgb(92, 143, 255);
+    box-shadow:2px 0px 1px rgba(0, 183, 255, 0.938);
+
+    padding-bottom: 8px;
+
+}
+
+.saveNone {
+    flex: 8;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.head {
+    flex: 1;
+}
+
+.data {
+    flex: 6;
+}
+
+.container {
+    width: 100%;
+}
+
+.info {
+    flex: 6;
+}
+
+.action{
+    border-left: 1px solid rgb(253, 171, 47);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-left: 12px;
+}
+
+.actionButton {
+    flex: 1;
+    align-self: stretch;
+    width: auto;
+    height: auto;
+    margin: 8px;
+}
+
+.check {
+    color: rgb(0, 255, 191);
+}
+
+.done {
+    color :rgb(110, 223, 148);
+
 }

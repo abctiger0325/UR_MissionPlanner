@@ -30,6 +30,7 @@
         "react-seven-segment-display": "^2.1.0",
         "react-switch": "^6.0.0",
         "react-xml-parser": "^1.1.8",
+        "reactstrap": "^8.9.0",
         "save-file": "^2.3.1",
         "styled-components": "^5.2.1",
         "uifx": "^2.0.7",

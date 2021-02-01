@@ -1,9 +1,10 @@
 import React from "react";
+import { Container, Row, Col } from "reactstrap";
 import XMLData from '../src/mission.xml';
 import RGL, { WidthProvider, GridLayout } from "react-grid-layout";
 import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
+import { BiArchiveIn, BiBookOpen, BiX, BiCheck } from "react-icons/bi";
 const { ipcRenderer } = window.require('electron');
-import { GrCatalog } from "react-icons/gr";
 
 export class Mission extends React.Component {
     constructor(props) {
@@ -84,7 +85,7 @@ export class Mission extends React.Component {
             limit,
             data,
             info: [],
-            info_id: ""
+            info_page: ""
         }
         console.log(this.state)
 
@@ -135,28 +136,29 @@ export class Mission extends React.Component {
                         Object.keys(d.$).forEach((data, i) => {
                             // console.log(data,i,d.$[data])
                             let comp =
-                                <div
-                                    className="info"
-                                    key={i}
-                                >
-                                    {data} : {d.$[data]}
-                                </div>
+                                <Row>
+                                    <Col className="head"><p>{data.toUpperCase()}</p></Col>
+                                    <Col className="data"><p>{d.$[data]}</p></Col>
+                                </Row>
                             info = info.concat(comp)
                         })
-                        info = info.concat(<GrCatalog onClick={(e) => {
-                            let data = ipcRenderer.sendSync('clicked', d.$["page"]);
-                        }}/>)
+                        info = info.concat(
+                            <Row>
+                                <Col className="head"><p>SHORT</p></Col>
+                                <Col className="data"><p>{d._}</p></Col>
+                            </Row>
+                        )
                         // let doc = new DOMParser().parseFromString(info,'text/xml')
                         // console.log(doc)
                         this.setState({
                             info,
-                            info_id: id
-                        })
+                            info_page: d.$["page"]
+                        }, () => ipcRenderer.sendSync('clicked', "ACK"))
                         // let data = ipcRenderer.sendSync('clicked', e.target.id);
                     }}
                     {...d.$}
                 >
-                    {d._}
+                    <p className="textTwo">{d._}</p>
                 </div>)
         })
         return missions
@@ -248,33 +250,66 @@ export class Mission extends React.Component {
     }
 
     render() {
-        const { missions, layout, draggable, data, info } = this.state
+        const { missions, layout, draggable, data, info, info_page } = this.state
         // console.log(draggable);
         const ReactGridLayout = WidthProvider(RGL);
         // console.log(ReactGridLayout)
-
+        console.log(info_page)
         return (
             <>
-                <ReactGridLayout
-                    layout={layout}
-                    isResizable={false}
-                    isDraggable={draggable}
-                    cols={1}
-                    rowHeight={60}
-                    width={300}
-                    // draggableCancel=".Disabled"
-                    onDragStop={(layout, oldItem, newItem, placeholder, e, element) => this.handleDrag(layout, oldItem, newItem, placeholder, e, element)}
-                >
-                    {missions}
-                </ReactGridLayout>
-                <button onClick={() => {
-                    let file = this.renderXML(data)
-                    // console.log(file)
-                    const dataURI = "data:text/xml;base64," + encodeBase64(file);
-                    saveAs(dataURI, this.props.file);
-                }}>Save</button>
-                <div className="missionViewer">
-                    {info}
+                <div className="missionView">
+                    <div className="missionAll">
+                        <ReactGridLayout
+                            layout={layout}
+                            isResizable={false}
+                            isDraggable={draggable}
+                            cols={1}
+                            rowHeight={60}
+                            width={300}
+                            // draggableCancel=".Disabled"
+                            onDragStop={(layout, oldItem, newItem, placeholder, e, element) => this.handleDrag(layout, oldItem, newItem, placeholder, e, element)}
+                        >
+                            {missions}
+                        </ReactGridLayout>
+                    </div>
+                    <div className="saveArea">
+                        <div className="saveMain"
+                            onClick={() => {
+                                let file = this.renderXML(data)
+                                // console.log(file)
+                                const dataURI = "data:text/xml;base64," + encodeBase64(file);
+                                saveAs(dataURI, this.props.file);
+                            }}
+                        >
+                            <BiArchiveIn 
+                                className="missionIcon"
+                            />
+                            <p>Save to XML</p>
+                        </div>
+                        <div className="saveNone">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div className="missionDetail">
+                    <div className="info">
+                        <Container>
+                            {info.length === 0 ? <Row></Row> :info}
+                        </Container>
+                    </div>
+                    <div className="action">
+                        <BiBookOpen 
+                            className="actionButton check"
+                            onClick={(e) => {
+                                if (info_page !== ""){
+                                    ipcRenderer.sendSync('clicked', info_page);
+                                }
+                            }} 
+                        />
+                        <BiCheck
+                            className="actionButton done"
+                        />
+                    </div>
                 </div>
             </>
         )

@@ -62,6 +62,7 @@ export class CounterSimp extends React.Component {
     // }
 
     startTimer() {
+        console.log(this.timer,this.state.tms)
         if (this.timer == 0 && this.state.tms > 0) {
             // console.log("dong")
             this.timer = setInterval(this.countDown, 10);
@@ -84,7 +85,22 @@ export class CounterSimp extends React.Component {
 
         // Check if we're at zero.
         if (tms == 0) {
-            clearInterval(this.timer);
+            if (prepared === false) {
+                this.stopTimer();
+                beep.play();
+                let tmp = (15 * 60) * 100;
+                let timeLeftVar = this.secondsToTime(tmp);
+                this.timer = 0;
+
+                this.setState({
+                    tms: tmp,
+                    time: timeLeftVar,
+                    prepared: true
+                }, () => this.startTimer())
+            } else {
+                end.play();
+                clearInterval(this.timer);
+            }
         }
     }
     render() {
@@ -171,7 +187,7 @@ export class CounterSimp extends React.Component {
                         onClick={() => {
                         let tmp = (this.props.min * 60 + this.props.sec) * 100;
                         let timeLeftVar = this.secondsToTime(tmp);
-
+                        this.timer = 0;
                         this.setState({
                             tms: tmp,
                             time: timeLeftVar,
@@ -186,12 +202,13 @@ export class CounterSimp extends React.Component {
                             beep.play();
                             let tmp = (15 * 60) * 100;
                             let timeLeftVar = this.secondsToTime(tmp);
+                            this.timer = 0;
 
                             this.setState({
                                 tms: tmp,
                                 time: timeLeftVar,
                                 prepared: true
-                            })
+                            },() => this.startTimer())
                         }}
                         />) 
                         : null

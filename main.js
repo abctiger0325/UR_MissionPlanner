@@ -45,7 +45,11 @@ function createWindow() {
 
     ipcMain.on('clicked',(e,arg) => {
         // console.log(arg)
-        mainWindow.webContents.send('clickedTran',arg);
+        if (arg !== "ACK")
+            mainWindow.webContents.send('clickedTran',arg);
+        else {
+            mainWindow.webContents.send('relimit', true);
+        }
         e.returnValue = true;
     })
 
