@@ -9,26 +9,6 @@ const { ipcRenderer } = window.require('electron');
 export class Mission extends React.Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     data: ''
-        // }
-        // let missions = XMLData.Plan.Mission.map((d, i) => {
-        //     console.log(d)
-        //     let name = d.$.prereg === undefined ? "MissionContainer" : "MissionContainer Disabled";
-        //     return (
-        //         <div
-        //             key={i}
-        //             className={name}
-        //             {...d.$}
-        //         >
-        //             {d._}
-        //         </div>)
-        // })
-
-
-        // let data = require('../src/'+ this.props.file)
-        // console.log(data)
-        // const data = XMLData.Plan.Mission;
         let data = ipcRenderer.sendSync('mounted', true);
         // console.log(data,XMLData)
         data = data.match(/[^<]+/g)
@@ -45,7 +25,8 @@ export class Mission extends React.Component {
                 let v = a[1].match(/\w+/g)
                 Object.defineProperty(attrObj, a[0], {
                     value: v[0],
-                    enumerable: true
+                    enumerable: true,
+                    writable: true
                 })
             })
             // console.log(attrObj)
@@ -54,26 +35,34 @@ export class Mission extends React.Component {
             Object.defineProperties(res, {
                 _: {
                     value: info,
-                    enumerable: true
+                    enumerable: true,
+                    writable: true
                 },
                 $: {
                     value: attrObj,
-                    enumerable: true
+                    enumerable: true,
+                    writable: true
                 }
             })
+
             // console.log(res)
+
             return res
+
         })
 
         this.state = {
-            data
+            data,
+            done_list: [],
+            total: 0
         }
+
         // console.log(this.state.data)
         // const dataURI = "data:text/xml;base64," + encodeBase64(JSON.stringify(data));
         // saveAs(dataURI, 'testing.xml');
 
 
-        let missions = this.renderDOM();
+        let [missions,total] = this.renderDOM();
 
         let res = this.renderLayout();
         let layout = res[0];
@@ -85,7 +74,10 @@ export class Mission extends React.Component {
             limit,
             data,
             info: [],
-            info_page: ""
+            info_page: "",
+            info_Id: "",
+            done_list: [],
+            total
         }
         console.log(this.state)
 
@@ -118,11 +110,48 @@ export class Mission extends React.Component {
         return prePass && reqPass;
     }
 
+    renderDetail(d,des){
+        const {data} = this.state;
+        let info = new Array;
+        // console.log(d)
+        Object.keys(d).forEach((data, i) => {
+            // console.log(data.toUpperCase)
+            let comp = data.toUpperCase() !== "DONE"?
+                <Row key={"ROW" + i}>
+                    <Col className="head" key={"head" + i}><p>{data.toUpperCase()}</p></Col>
+                    <Col className="data" key={"data" + i}><p>{d[data]}</p></Col>
+                </Row>:
+                <Row key={"ROW" + i}>
+                    <Col className="head" key={"head" + i}><p>{data.toUpperCase()}</p></Col>
+                    <Col className="data" key={"data" + i}><p>{d[data] === "true" ? <BiCheck className="finish"/>:<BiX className="not"/>}</p></Col>
+                </Row>
+            info = info.concat(comp)
+        })
+        info = info.concat(
+            <Row key={"ROW"}>
+                <Col className="head" key={"head"}><p>SHORT</p></Col>
+                <Col className="data" key={"data"}><p>{des}</p></Col>
+            </Row>
+        )
+        // let doc = new DOMParser().parseFromString(info,'text/xml')
+        // console.log(doc)
+        this.setState({
+            info_Id: d["id"],
+            info,
+            info_page: d["page"]
+        }, () => ipcRenderer.sendSync('clicked', "ACK"))
+
+    }
+
     renderDOM() {
-        const { data } = this.state;
+        const { data, done_list } = this.state;
+        let total = 0;
         let missions = data.map((d, i) => {
             // console.log(d)
-            let name = d.$.prereg === undefined ? "MissionContainer" : "MissionContainer Disabled";
+            let name = d.$.prereg === undefined ? "MissionContainer" : done_list.includes(d.$.prereg)? "MissionContainer":"MissionContainer Disabled";
+            if (name === "MissionContainer") name = done_list.includes(d.$.id)? name + " Finished":name
+            // console.log(d.$)
+            total += parseInt(d.$.point)
             return (
                 <div
                     key={i}
@@ -131,29 +160,9 @@ export class Mission extends React.Component {
                         if (this.state.draggable) return;
                         // console.log(e.target.id)
                         let id = e.target.id;
+                        console.log(d)
+                        this.renderDetail(d.$,d._);
                         // console.log(d.$)
-                        let info = new Array;
-                        Object.keys(d.$).forEach((data, i) => {
-                            // console.log(data,i,d.$[data])
-                            let comp =
-                                <Row>
-                                    <Col className="head"><p>{data.toUpperCase()}</p></Col>
-                                    <Col className="data"><p>{d.$[data]}</p></Col>
-                                </Row>
-                            info = info.concat(comp)
-                        })
-                        info = info.concat(
-                            <Row>
-                                <Col className="head"><p>SHORT</p></Col>
-                                <Col className="data"><p>{d._}</p></Col>
-                            </Row>
-                        )
-                        // let doc = new DOMParser().parseFromString(info,'text/xml')
-                        // console.log(doc)
-                        this.setState({
-                            info,
-                            info_page: d.$["page"]
-                        }, () => ipcRenderer.sendSync('clicked', "ACK"))
                         // let data = ipcRenderer.sendSync('clicked', e.target.id);
                     }}
                     {...d.$}
@@ -161,7 +170,7 @@ export class Mission extends React.Component {
                     <p className="textTwo">{d._}</p>
                 </div>)
         })
-        return missions
+        return [missions,total]
     }
 
     renderLayout() {
@@ -208,7 +217,7 @@ export class Mission extends React.Component {
         const { data } = this.state;
         const listObj = data.splice(oldItem.y, 1);
         data.splice(newItem.y, 0, listObj[0])
-        let missionsNew = this.renderDOM();
+        let [missionsNew,total] = this.renderDOM();
 
         let res = this.renderLayout();
         let layoutNew = res[0];
@@ -219,7 +228,8 @@ export class Mission extends React.Component {
             missions: missionsNew,
             layout: layoutNew,
             limit: limitNew,
-            data
+            data,
+            total
         })
     }
 
@@ -232,10 +242,16 @@ export class Mission extends React.Component {
             let attrString = ""
             // console.log(Object.keys(attr))
             Object.keys(attr).forEach((k, i) => {
-                // console.log(k,i)
-                attrString = attrString.concat(
-                    `${k}="${attr[k]}" `
-                )
+
+                if (k !== "done"){
+                    attrString = attrString.concat(
+                        `${k}="${attr[k]}" `
+                    )
+                } else {
+                    attrString = attrString.concat(
+                        `${k}="false" `
+                    )
+                }
             })
             let tmp = d._
             let regex = /\w+|\s\b/g
@@ -250,11 +266,21 @@ export class Mission extends React.Component {
     }
 
     render() {
-        const { missions, layout, draggable, data, info, info_page } = this.state
-        // console.log(draggable);
+        const { missions, layout, draggable, data, info, info_page, info_Id, done_list, total } = this.state
+        // console.log(done_list);
         const ReactGridLayout = WidthProvider(RGL);
-        // console.log(ReactGridLayout)
-        console.log(info_page)
+        let score = 0;
+        missions.forEach(x => {
+            if (done_list.includes(x.props.id)) score += parseInt(x.props.point)
+        })
+        let score_progress = ""
+        console.log(score / total)
+        if (score/total <= 0.4) score_progress = "start"
+        else if (score / total <= 0.6) score_progress = "mid"
+        else if (score / total <= 0.9) score_progress = "almost"
+        else if ((score / total) === 1) score_progress = "end"
+
+        // console.log(missions)
         return (
             <>
                 <div className="missionView">
@@ -284,10 +310,13 @@ export class Mission extends React.Component {
                             <BiArchiveIn 
                                 className="missionIcon"
                             />
-                            <p>Save to XML</p>
+                            <p className="saveText">Save to XML</p>
                         </div>
-                        <div className="saveNone">
-                            
+                        <div className="other">
+                            <div className="Score">
+                                <p className={score_progress}>Total Score</p>
+                                <p className={score_progress}>{score}/{total}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -307,6 +336,28 @@ export class Mission extends React.Component {
                             }} 
                         />
                         <BiCheck
+                            onClick={(e) => {
+                                if (info.length !== 0){
+                                    // let preId = info.filter(x => (x.props.children[0].props.children.props.children))
+                                    // console.log(preId)
+
+                                    missions.forEach((d, i) => {
+                                        if (!done_list.includes(info_Id) && d.props.id === info_Id ){
+                                            if (d.props.prereg !== undefined && !done_list.includes(d.props.prereg)) return;
+                                            done_list.push(info_Id);
+                                            // console.log(data[i])
+                                            data[i].$.done = "true"
+                                            this.setState({data,info,done_list},() => {
+                                                let [missions,total] = this.renderDOM();
+                                                this.setState({ missions,total }, () =>
+                                                    this.renderDetail(data[i].$, data[i]._)
+                                                )
+                                            })
+                                        } 
+                                    });
+                                    // this.setState({missions:tmp})
+                                }
+                            }}
                             className="actionButton done"
                         />
                     </div>

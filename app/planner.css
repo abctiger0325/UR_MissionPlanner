@@ -13,6 +13,25 @@ body {
 
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #021a1b; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(110, 255, 224); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(106, 208, 255); 
+}
+
 button {
     margin: 5px
 }
@@ -171,6 +190,15 @@ button {
     opacity: 0.5;
 }
 
+.Finished {
+    background-color: #04e48e;
+}
+
+.Score {
+    align-self: flex-end;
+    margin-bottom: 10px;
+}
+
 .react-switch {
     margin: 5px;
 }
@@ -239,6 +267,9 @@ button {
     /* display: inline; */
     flex: 4;
     margin-bottom: 15px;
+    max-height: 22em;
+    overflow-y: scroll;
+    margin-right: 10px;
 }
 
 .missionView {
@@ -258,7 +289,7 @@ button {
     flex: 1;
 }
 
-.saveArea p {
+.saveText {
     color: rgb(255, 197, 238);
     font-family: Stencil Std, fantasy;
     /* font-size: 30px; */
@@ -279,6 +310,23 @@ button {
     user-select: none;
 }
 
+.Score p {
+    font-family: Stencil Std, fantasy;
+    margin: 8px;
+    margin-bottom: auto;
+
+
+    font-size: 2.5vw;    
+    transition: 0.2s;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+
 .saveMain {
     flex: 1;
     display: flex;
@@ -290,8 +338,10 @@ button {
 
 }
 
-.saveNone {
+.other {
     flex: 8;
+    display: flex;
+    flex-direction: row;
 }
 
 .row {
@@ -339,5 +389,32 @@ button {
 
 .done {
     color :rgb(110, 223, 148);
+}
 
+.finish {
+    color: rgb(21, 255, 91);
+}
+
+.not {
+    color: rgb(238, 34, 34);
+}
+
+.start {
+    color: rgb(255, 193, 206);
+    text-shadow: -2px 2px #9c2e2e;
+}
+
+.mid {
+    color: rgb(255, 224, 157);
+    text-shadow: -2px 2px #773601;
+}
+
+.almost {
+    color: rgb(224, 255, 167);
+    text-shadow: -2px 2px #657700;
+}
+
+.end {
+    color: rgb(149, 255, 181);
+    text-shadow: -2px 2px #00643e;
 }
