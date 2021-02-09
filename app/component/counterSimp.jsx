@@ -10,13 +10,13 @@ export class CounterSimp extends React.Component {
         let timeLeftVar = this.secondsToTime(tmp);
         // console.log(timeLeftVar)
         const end = new UIfx(
-            '../app/src/end.mp3',
+            '../src/end.mp3',
             {
                 volume: 0.7
             }
         );
         const beep = new UIfx(
-            '../app/src/beep.mp3',
+            '../src/beep.mp3',
             {
                 volume: 0.7
             }

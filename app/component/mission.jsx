@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
-import XMLData from '../src/mission.xml';
+// import XMLData from '../src/mission.xml';
 import RGL, { WidthProvider, GridLayout } from "react-grid-layout";
 import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
 import { BiArchiveIn, BiBookOpen, BiX, BiCheck } from "react-icons/bi";

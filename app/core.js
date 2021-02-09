@@ -5,27 +5,27 @@ const { ipcRenderer } = require('electron');
 
 pdfjsLib.GlobalWorkerOptions.workerSrc ='../public/pdfjs/build/pdf.worker.js';
 
-function pdfRender(){
-    let link = __dirname + "/src/mannual.pdf"
-    let pdf = pdfjsLib.getDocument(link)
-    pdf.promise.then(function(pdfRes){
-        pdfRes.getPage(1).then(function(page){
-            console.log("dong")
-            let scale = 1;
-            let viewport = page.getViewport(scale);
-            // console.log($("#pdf"))
-            let context = $("#pdf")[0].getContext('2d')
-            $("#pdf").height(viewport.height)
-            $("#pdf").width(viewport.width)
-            let renderContext = {
-                canvasContext: context,
-                viewport: viewport
-            };
-            page.render(renderContext);
-        })
-        // console.log("ding")
-    })
-}
+// function pdfRender(){
+//     let link = __dirname + "/src/mannual.pdf"
+//     let pdf = pdfjsLib.getDocument(link)
+//     pdf.promise.then(function(pdfRes){
+//         pdfRes.getPage(1).then(function(page){
+//             console.log("dong")
+//             let scale = 1;
+//             let viewport = page.getViewport(scale);
+//             // console.log($("#pdf"))
+//             let context = $("#pdf")[0].getContext('2d')
+//             $("#pdf").height(viewport.height)
+//             $("#pdf").width(viewport.width)
+//             let renderContext = {
+//                 canvasContext: context,
+//                 viewport: viewport
+//             };
+//             page.render(renderContext);
+//         })
+//         // console.log("ding")
+//     })
+// }
 
 $(document).ready(
     function(){
@@ -33,7 +33,7 @@ $(document).ready(
         // pdfRender();
         ipcRenderer.on('clickedTran', (e,arg) => {
             console.log("ding",arg)
-            let filepath = __dirname + "/src/mannual.pdf"
+            let filepath = __dirname + "/../src/mannual.pdf"
             arg = parseInt(arg) + 1
             let dir = __dirname + `/../public/pdfjs/web/viewer.html?file=${filepath}#page=${arg}`
 
@@ -56,7 +56,7 @@ $(document).ready(
 
         })
 
-        let filepath = __dirname + "/src/mannual.pdf"
+        let filepath = __dirname + "/../src/mannual.pdf"
         let dir = __dirname + `/../public/pdfjs/web/viewer.html?file=${filepath}`
         // console.log(dir)
         $("#pdf").append(
