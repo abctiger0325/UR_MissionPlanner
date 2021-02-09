@@ -11,9 +11,6 @@
         "@react-pdf/renderer": "^1.6.12",
         "babel-loader": "^8.2.2",
         "easytimer.js": "^4.3.1",
-        "electron": "^11.1.1",
-        "electron-packager": "^15.2.0",
-        "electron-prebuilt": "^1.4.13",
         "electron-rebuild": "^2.3.4",
         "fs": "0.0.1-security",
         "jquery": "^3.5.1",
@@ -43,9 +40,14 @@
     "scripts": {
         "start": "./node_modules/.bin/electron .",
         "electron-rebuild": "./node_modules/.bin/electron-rebuild",
-        "webpack": "./node_modules/.bin/webpack"
+        "webpack": "webpack --mode development",
+        "webpack-pro": "webpack --mode production",
+        "build": "electron-packager . URPlanner --platform=win32 --arch=x64 --electron-version=11.1.1 --icon=icon/kelvin.ico --out=dist --ignore=node_modules/electron-* --version-string.CompanyName=URPlanner --version-string.ProductName=URPlanner --overwrite"
     },
     "devDependencies": {
+        "electron": "^11.2.3",
+        "electron-packager": "^15.2.0",
+        "electron-prebuilt": "^1.4.13",
         "webpack-cli": "^4.3.1"
     },
     "build": {

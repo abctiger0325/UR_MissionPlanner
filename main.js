@@ -39,7 +39,7 @@ function createWindow() {
     ipcMain.on('mounted',(e) => {
         let fs = require('fs');
 
-        let data = fs.readFileSync('./src/mission.xml', { encoding: 'utf-8' });
+        let data = fs.readFileSync( __filename + '/../src/mission.xml', { encoding: 'utf-8' });
         e.returnValue = data
     })
 
@@ -55,7 +55,7 @@ function createWindow() {
 
     mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
     mainWindow.setMenuBarVisibility(false)
 
     mainWindow.on('closed', function () {
