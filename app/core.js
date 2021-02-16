@@ -46,7 +46,7 @@ $(document).ready(
                 .attr('status', "on")
             $("#mannual")
                 .css('width', '')
-                .css('flex', '3')
+                .css('flex', '5')
             if ($("#pdf").attr('init') === "false") {
                 $("#pdf")
                     .css('width', '100%')
@@ -66,8 +66,9 @@ $(document).ready(
         let width = $(".MissionContainer").width();
         console.log(width)
         $(".MissionContainer").css("min-width",width);
+
         ipcRenderer.on('relimit', (e, arg) => {
-            $(".MissionContainer").css("min-width", width);
+            // $(".MissionContainer").css("min-width", width);
         })
         $(".saveArea").css("min-width",$(".saveArea").width())
         $("#toggle").click(function () {
@@ -86,7 +87,7 @@ $(document).ready(
                     .attr('status', "on")
                 $("#mannual")
                     .css('width', '')
-                    .css('flex', '3')
+                    .css('flex', '6')
                 if ($("#pdf").attr('init') === "false") {
                     $("#pdf")
                         .css('width', '100%')

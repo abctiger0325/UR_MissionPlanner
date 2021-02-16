@@ -156,7 +156,7 @@ export class Mission extends React.Component {
                 <div
                     key={i}
                     className={name}
-                    onClick={(e) => {
+                    onMouseEnter={(e) => {
                         if (this.state.draggable) return;
                         // console.log(e.target.id)
                         let id = e.target.id;
@@ -165,6 +165,22 @@ export class Mission extends React.Component {
                         // console.log(d.$)
                         // let data = ipcRenderer.sendSync('clicked', e.target.id);
                     }}
+                    onClick={(e) => {
+                        if (!done_list.includes(d.$.id)) {
+                            if (d.$.prereg !== undefined && !done_list.includes(d.$.prereg)) return;
+                            done_list.push(d.$.id);
+                            // console.log(data[i])
+                            data[i].$.done = "true"
+                            this.setState({ data, done_list }, () => {
+                                let [missions, total] = this.renderDOM();
+                                this.setState({ missions, total }, () =>
+                                    this.renderDetail(d.$, d._)
+                                )
+                            })
+                        }
+                    // this.setState({missions:tmp})
+                    }}
+
                     {...d.$}
                 >
                     <p className="textTwo">{d._}</p>

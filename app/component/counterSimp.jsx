@@ -2,6 +2,8 @@ import React from "react";
 import UIfx from 'uifx';
 import SevenSegmentDisplay from "react-seven-segment-display";
 import { BiPlay, BiStop, BiReset, BiSkipNext} from "react-icons/bi";
+const { ipcRenderer } = window.require('electron');
+
 
 export class CounterSimp extends React.Component {
     constructor(props) {
@@ -33,6 +35,26 @@ export class CounterSimp extends React.Component {
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
+
+        ipcRenderer.on('timer',(e, arg) => {
+            if (arg === true) {
+                this.startTimer();
+            } else {
+                this.stopTimer();
+            }
+        })
+        ipcRenderer.on('reload', () => {
+            let tmp = (this.props.min * 60 + this.props.sec) * 100;
+            let timeLeftVar = this.secondsToTime(tmp);
+            this.stopTimer();
+            this.timer = 0;
+            this.setState({
+                tms: tmp,
+                time: timeLeftVar,
+                prepared: false
+            });
+        })
+
     }
 
 
@@ -71,6 +93,7 @@ export class CounterSimp extends React.Component {
 
     stopTimer(){
         clearInterval(this.timer);
+        this.timer = 0;
     }
 
     countDown() {

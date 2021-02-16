@@ -52,6 +52,7 @@ button {
     padding: 15px;
     /* justify-content: center; */
     align-items: center;
+    height: 20vh;
 }
 /* #planner {
 } */
@@ -79,8 +80,7 @@ button {
     text-shadow: -1px 1px #00ffc8;
     margin: 8px;
 
-    font-size: 2.2vw;    
-    transition: 0.2s;
+    font-size: 1.5vw;    
 
     
     -webkit-touch-callout: none; /* iOS Safari */
@@ -174,13 +174,16 @@ button {
     border: 1px solid rgb(110, 223, 148);
     margin : 10px;
     /* background-color: #32d1a9; */
-    max-width: 50%;
+    max-width: 45vw;
+    min-width: 45vw;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
     -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Old versions of Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none;
+
+    overflow: hidden;
 }
 
 .Disabled {
@@ -213,7 +216,8 @@ button {
 }
 
 .missionDetail {
-    width: 60vw;
+    min-width: 40vw;
+    max-width: 70vw;
     height:25vh;
     align-self: center;
     border: 5px double rgba(252, 227, 90, 0.89);
@@ -235,7 +239,7 @@ button {
     margin-bottom: auto;
 
 
-    font-size: 1.6vw;    
+    font-size: 1.25vw;    
     transition: 0.2s;
 
     
@@ -260,15 +264,19 @@ button {
     margin: 5px 6px 15px 6px;
     border-radius: 5px;
     padding: 15px;
+    height: 70vh;
 
 }
 
 .missionAll {
     /* display: inline; */
-    flex: 4;
+    flex: 5;
+    min-width: 50%;
+
     margin-bottom: 15px;
     max-height: 22em;
     overflow-y: scroll;
+    overflow-x: hidden;
     margin-right: 10px;
 }
 
@@ -298,8 +306,7 @@ button {
     margin-bottom: auto;
 
 
-    font-size: 2.5vw;    
-    transition: 0.2s;
+    font-size: 1.8vw;    
 
     
     -webkit-touch-callout: none; /* iOS Safari */
@@ -317,7 +324,6 @@ button {
 
 
     font-size: 2.5vw;    
-    transition: 0.2s;
 
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */

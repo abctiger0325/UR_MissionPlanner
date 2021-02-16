@@ -14,6 +14,7 @@ app.commandLine.appendSwitch('no-sandbox');
 
 
 var mainWindow;
+var timerState = false;
 
 function createWindow() {
     mainWindow = new BrowserWindow({ 
@@ -40,6 +41,7 @@ function createWindow() {
         let fs = require('fs');
 
         let data = fs.readFileSync( __filename + '/../src/mission.xml', { encoding: 'utf-8' });
+        // let data = fs.readFileSync('./src/mission.xml', { encoding: 'utf-8' });
         e.returnValue = data
     })
 
@@ -61,6 +63,22 @@ function createWindow() {
     mainWindow.on('closed', function () {
         mainWindow = null;
     });
+
+    mainWindow.webContents.on('before-input-event', (event, input) => {
+        if (input.type === 'keyUp'){
+            if (input.key === ' ') {
+                timerState = !timerState;
+                console.log(timerState)
+                mainWindow.webContents.send('timer', timerState);
+            } else if (input.key.toLocaleLowerCase() === 'r') {
+                timerState = false
+                mainWindow.webContents.send('reload', true);
+            } else if (input.key === "Escape"){
+                app.quit();
+            }
+            event.preventDefault()
+        }  
+    })
 }
 
 app.on('ready', createWindow);
